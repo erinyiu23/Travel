@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="東北函館微醺" />
+  <title>2026 東北・函館微醺巡禮手冊（iPhone 版）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-washi: #FFFCF6;
+      --ink: #3E3A39;
+      --coral: #F2A497;
+      --yamabuki: #F6D27A;
+      --mizu: #A8D3E6;
+      --wakatake: #B9DAA5;
+      --card-bg: #FFFFFF;
+      --border-w: 3px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-pill: 999px;
+      --shadow-hard: 4px 4px 0px #3E3A39;
+      --shadow-sm: 2px 2px 0px #3E3A39;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Huninn', -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg-washi);
+      background-image: radial-gradient(#3E3A3918 1.5px, transparent 1.5px);
+      background-size: 20px 20px;
+      color: var(--ink);
+      line-height: 1.65;
+      padding-top: calc(64px + var(--safe-top));
+      padding-bottom: calc(68px + var(--safe-bottom));
+      overflow-x: hidden;
+    }
+
+    /* iPhone 頂端固定選單（支援安全區域與單手滑動） */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background-color: var(--bg-washi);
+      border-bottom: var(--border-w) solid var(--ink);
+      padding: calc(8px + var(--safe-top)) 12px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-pill {
+      text-decoration: none;
+      color: var(--ink);
+      background: var(--card-bg);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 5px 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease;
+    }
+
+    .nav-pill:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+
+    .motion-toggle {
+      background: var(--yamabuki);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 5px 10px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: var(--ink);
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .motion-toggle[aria-pressed="true"] {
+      background: #E5E0D8;
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 16px calc(16px + env(safe-area-inset-right, 0px)) 16px calc(16px + env(safe-area-inset-left, 0px));
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* 通用繪本卡片 */
+    .ehon-card {
+      background: var(--card-bg);
+      border: var(--border-w) solid var(--ink);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-hard);
+      position: relative;
+    }
+
+    .section-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+      padding: 4px 16px;
+      border: var(--border-w) solid var(--ink);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* 首頁 Hero 區塊 */
+    .hero-card {
+      background: var(--bg-washi);
+      text-align: center;
+      padding: 22px 16px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--coral);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 4px 14px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-title {
+      font-size: 1.7rem;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      opacity: 0.88;
+      margin-bottom: 14px;
+    }
+
+    .hero-svg-wrap {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto 16px;
+      background: var(--mizu);
+      border: var(--border-w) solid var(--ink);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* iPhone 離線/主畫面提示小卡 */
+    .iphone-tip {
+      background: #FFF9EB;
+      border: 2px dashed var(--ink);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 0.84rem;
+      text-align: left;
+      margin-bottom: 14px;
+    }
+
+    /* 倒數計時器 */
+    .countdown-box {
+      background: var(--yamabuki);
+      border: var(--border-w) solid var(--ink);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .countdown-label {
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .cd-item {
+      background: var(--card-bg);
+      border: 2.5px solid var(--ink);
+      border-radius: 12px;
+      padding: 6px 4px;
+    }
+
+    .cd-num {
+      font-size: 1.35rem;
+      font-weight: bold;
+      display: block;
+      line-height: 1.15;
+    }
+
+    .cd-unit {
+      font-size: 0.75rem;
+    }
+
+    /* 航班卡片 */
+    .flight-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .flight-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .flight-ticket {
+      background: var(--bg-washi);
+      border: var(--border-w) solid var(--ink);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .flight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2.5px dashed var(--ink);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      gap: 6px;
+    }
+
+    .flight-tag {
+      padding: 2px 10px;
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .flight-route {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .airport-code {
+      font-size: 1.45rem;
+      font-weight: bold;
+    }
+
+    .airport-name {
+      font-size: 0.8rem;
+    }
+
+    .flight-time {
+      font-size: 0.9rem;
+      background: #FFF;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      padding: 6px 10px;
+      text-align: center;
+    }
+
+    /* 每日行程日期切換器 */
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 2px 12px;
+      margin-bottom: 12px;
+      scrollbar-width: thin;
+    }
+
+    .day-tab {
+      flex: 0 0 auto;
+      min-width: 72px;
+      background: var(--card-bg);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-family: inherit;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s;
+    }
+
+    .day-tab .d-num {
+      display: block;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .day-tab .d-date {
+      display: block;
+      font-size: 0.78rem;
+    }
+
+    .day-tab.active {
+      background: var(--coral);
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    /* 彈跳出現動畫 */
+    @keyframes popBounce {
+      0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(8px);
+      }
+      65% {
+        opacity: 1;
+        transform: scale(1.015) translateY(-2px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .day-panel.animate-in {
+      animation: popBounce 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* 行程當日標頭 */
+    .day-banner {
+      background: var(--bg-washi);
+      border: var(--border-w) solid var(--ink);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .day-banner-info h3 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+    }
+
+    .stay-pill {
+      display: inline-block;
+      background: var(--wakatake);
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 2px 10px;
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+
+    .jr-pill {
+      display: inline-block;
+      background: var(--mizu);
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 2px 10px;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      margin-left: 4px;
+    }
+
+    .day-illus {
+      width: 78px;
+      height: 78px;
+      flex-shrink: 0;
+      background: #FFF;
+      border: 2.5px solid var(--ink);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+    }
+
+    /* Plan A / B 切換 */
+    .plan-switcher {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .plan-btn {
+      flex: 1 1 140px;
+      padding: 8px 12px;
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: bold;
+      background: var(--card-bg);
+      color: var(--ink);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .plan-btn.active {
+      background: var(--yamabuki);
+    }
+
+    /* 時間軸 */
+    .timeline {
+      position: relative;
+      padding-left: 22px;
+      border-left: 3px dashed var(--ink);
+      margin-left: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tl-item {
+      position: relative;
+      background: var(--bg-washi);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: -32px;
+      top: 16px;
+      width: 14px;
+      height: 14px;
+      background: var(--coral);
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+    }
+
+    .tl-item.bar-item {
+      background: #FFF7E6;
+    }
+
+    .tl-item.bar-item::before {
+      background: var(--yamabuki);
+    }
+
+    .tl-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .tl-time {
+      font-weight: bold;
+      font-size: 0.92rem;
+      background: #FFF;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      padding: 1px 8px;
+    }
+
+    /* 交通方式彩色小標籤 */
+    .t-badge {
+      font-size: 0.76rem;
+      font-weight: bold;
+      padding: 2px 9px;
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-pill);
+    }
+    .t-shinkansen { background: var(--mizu); }
+    .t-jr { background: var(--wakatake); }
+    .t-tram { background: var(--yamabuki); }
+    .t-bus { background: #E5D4F7; }
+    .t-walk { background: #F5E6D3; }
+    .t-flight { background: var(--coral); }
+    .t-bar { background: var(--yamabuki); }
+
+    /* 必去標籤 */
+    .must-go {
+      background: var(--coral);
+      color: var(--ink);
+      font-size: 0.76rem;
+      font-weight: bold;
+      padding: 2px 9px;
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .tl-title {
+      font-size: 1.04rem;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .tl-desc {
+      font-size: 0.9rem;
+      color: #4F4A48;
+    }
+
+    .seat-box {
+      margin-top: 6px;
+      background: #FFFFFF;
+      border: 2px dashed var(--ink);
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 0.84rem;
+    }
+
+    /* 住宿卡片列表 */
+    .hotel-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .hotel-item {
+      background: var(--bg-washi);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hotel-days {
+      display: inline-block;
+      background: var(--mizu);
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 1px 10px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    /* 可打勾清單 */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--bg-washi);
+      border: 2.5px solid var(--ink);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+
+    .check-row input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      border: 2.5px solid var(--ink);
+      border-radius: 7px;
+      background: #FFF;
+      margin-top: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .check-row input[type="checkbox"]:checked {
+      background: var(--wakatake);
+    }
+
+    .check-row input[type="checkbox"]:checked::after {
+      content: "✓";
+      position: absolute;
+      top: -3px;
+      left: 3px;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--ink);
+    }
+
+    .check-row.done {
+      background: #F0ECE3;
+      opacity: 0.72;
+    }
+
+    .check-row.done .check-text {
+      text-decoration: line-through;
+    }
+
+    .add-item-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .add-input {
+      flex: 1;
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 16px; /* 防止 iPhone 輸入時自動放大畫面 */
+      background: #FFF;
+      color: var(--ink);
+    }
+
+    .add-btn {
+      background: var(--wakatake);
+      border: 2.5px solid var(--ink);
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-family: inherit;
+      font-weight: bold;
+      color: var(--ink);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* SVG 繪本輕微擺動動畫 */
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(1.5deg); }
+    }
+
+    @keyframes gentleSway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2.5deg); }
+    }
+
+    @keyframes trainChug {
+      0%, 100% { transform: translateX(0px); }
+      50% { transform: translateX(5px); }
+    }
+
+    .anim-float {
+      animation: gentleFloat 3.6s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    .anim-sway {
+      animation: gentleSway 3s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    .anim-train {
+      animation: trainChug 2.8s ease-in-out infinite;
+    }
+
+    /* 減少動態效果支援 */
+    body.reduce-motion *,
+    body.reduce-motion *::before,
+    body.reduce-motion *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂端固定選單 -->
+  <nav class="navbar">
+    <div class="nav-links">
+      <a href="#top" class="nav-pill">首頁</a>
+      <a href="#flights" class="nav-pill">航班</a>
+      <a href="#itinerary" class="nav-pill">每日行程</a>
+      <a href="#hotels" class="nav-pill">住宿</a>
+      <a href="#checklists" class="nav-pill">清單</a>
+    </div>
+    <button id="motionBtn" class="motion-toggle" aria-pressed="false" title="切換動畫效果">
+      <span id="motionIcon">✨</span>
+      <span id="motionText">動態開</span>
+    </button>
+  </nav>
+
+  <main class="container" id="top">
+
+    <!-- 1. 首頁插圖＋標題＋出發倒數 -->
+    <section class="ehon-card hero-card">
+      <span class="hero-badge">2026.12.01 – 12.10 ・ 大人 2 位 ・ iPhone 版</span>
+      <h1 class="hero-title">東北・函館微醺巡禮手冊</h1>
+      <p class="hero-sub">新幹線雪景 × 暖桌遊船 × 八大日威經典酒吧</p>
+
+      <!-- 手繪風 SVG 主視覺插圖：Hayabusa 新幹線 + 函館聖誕樹 + 威士忌杯 -->
+      <div class="hero-svg-wrap">
+        <svg viewBox="0 0 360 150" width="100%" height="auto" aria-label="東北新幹線與函館聖誕微醺插圖">
+          <path d="M10 115 L75 45 L140 115 Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M58 64 L75 45 L92 64 L82 60 L75 66 L68 60 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M105 115 L175 35 L245 115 Z" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M155 58 L175 35 L195 58 L184 53 L175 60 L166 53 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/>
+
+          <g class="anim-sway">
+            <polygon points="295,32 272,68 318,68" fill="#B9DAA5" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+            <polygon points="295,52 266,95 324,95" fill="#B9DAA5" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+            <rect x="289" y="95" width="12" height="16" fill="#F2A497" stroke="#3E3A39" stroke-width="2.5"/>
+            <polygon points="295,18 298,25 305,25 299,30 301,37 295,33 289,37 291,30 285,25 292,25" fill="#F6D27A" stroke="#3E3A39" stroke-width="2"/>
+            <circle cx="290" cy="60" r="3" fill="#F2A497"/>
+            <circle cx="303" cy="76" r="3" fill="#F6D27A"/>
+            <circle cx="283" cy="84" r="3" fill="#FFFFFF"/>
+          </g>
+
+          <g class="anim-float">
+            <circle cx="42" cy="30" r="4" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2"/>
+            <circle cx="132" cy="24" r="3.5" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2"/>
+            <circle cx="235" cy="32" r="4" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2"/>
+          </g>
+
+          <line x1="8" y1="115" x2="352" y2="115" stroke="#3E3A39" stroke-width="3.5" stroke-linecap="round"/>
+
+          <g class="anim-train">
+            <path d="M35 112 L35 92 Q35 82 52 82 L155 82 Q188 82 205 104 Q210 110 202 112 Z" fill="#B9DAA5" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M36 99 L196 99" stroke="#F2A497" stroke-width="4"/>
+            <rect x="50" y="88" width="16" height="8" rx="3" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2"/>
+            <rect x="74" y="88" width="16" height="8" rx="3" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2"/>
+            <rect x="98" y="88" width="16" height="8" rx="3" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2"/>
+            <rect x="122" y="88" width="16" height="8" rx="3" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2"/>
+            <path d="M152 87 L172 87 L182 95 L152 95 Z" fill="#3E3A39"/>
+          </g>
+
+          <g class="anim-float" transform="translate(222, 74)">
+            <rect x="0" y="6" width="32" height="34" rx="5" fill="#FFFFFF" stroke="#3E3A39" stroke-width="3"/>
+            <rect x="3" y="18" width="26" height="19" rx="3" fill="#F6D27A"/>
+            <circle cx="16" cy="26" r="7" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="iphone-tip">
+        📱 <strong>iPhone 開啟小幫手：</strong>若在 Safari 打開，可點下方「分享」➔「加入主畫面」，就能像 App 一樣全螢幕隨時查看與打勾！
+      </div>
+
+      <!-- 出發倒數 -->
+      <div class="countdown-box">
+        <div class="countdown-label" id="cdStatus">距離 2026/12/01 09:00 香港起飛還有</div>
+        <div class="countdown-grid">
+          <div class="cd-item"><span class="cd-num" id="cdDays">--</span><span class="cd-unit">天</span></div>
+          <div class="cd-item"><span class="cd-num" id="cdHours">--</span><span class="cd-unit">時</span></div>
+          <div class="cd-item"><span class="cd-num" id="cdMins">--</span><span class="cd-unit">分</span></div>
+          <div class="cd-item"><span class="cd-num" id="cdSecs">--</span><span class="cd-unit">秒</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 航班卡片 -->
+    <section class="ehon-card" id="flights">
+      <h2 class="section-title" style="background: var(--mizu);">✈️ 往返航班資訊</h2>
+      <div class="flight-grid">
+        <div class="flight-ticket">
+          <div class="flight-header">
+            <span class="flight-tag" style="background: var(--coral);">去程 D1 ・ 12/1 (二)</span>
+            <strong>HK Express UO890</strong>
+          </div>
+          <div class="flight-route">
+            <div>
+              <div class="airport-code">HKG</div>
+              <div class="airport-name">香港 T2</div>
+            </div>
+            <div style="font-size: 1.3rem;">🛫 ➔</div>
+            <div>
+              <div class="airport-code">SDJ</div>
+              <div class="airport-name">仙台機場</div>
+            </div>
+          </div>
+          <div class="flight-time">
+            <strong>09:00</strong> 起飛 ➔ <strong>14:05</strong> 抵達
+          </div>
+        </div>
+
+        <div class="flight-ticket">
+          <div class="flight-header">
+            <span class="flight-tag" style="background: var(--wakatake);">回程 D10 ・ 12/10 (四)</span>
+            <strong>HK Express UO891</strong>
+          </div>
+          <div class="flight-route">
+            <div>
+              <div class="airport-code">SDJ</div>
+              <div class="airport-name">仙台機場</div>
+            </div>
+            <div style="font-size: 1.3rem;">🛫 ➔</div>
+            <div>
+              <div class="airport-code">HKG</div>
+              <div class="airport-name">香港 T1</div>
+            </div>
+          </div>
+          <div class="flight-time">
+            <strong>15:00</strong> 起飛 ➔ <strong>19:40</strong> 抵達
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 每日行程 -->
+    <section class="ehon-card" id="itinerary">
+      <h2 class="section-title" style="background: var(--yamabuki);">🗓️ 每日微醺行程</h2>
+      <div class="day-tabs" id="dayTabs" role="tablist"></div>
+      <div id="dayContent" class="day-panel"></div>
+    </section>
+
+    <!-- 4. 住宿資訊 -->
+    <section class="ehon-card" id="hotels">
+      <h2 class="section-title" style="background: var(--wakatake);">🏨 住宿與行李動態</h2>
+      <div class="hotel-list">
+        <div class="hotel-item">
+          <span class="hotel-days">D1（12/1）＆ D8–D9（12/8–12/10 退房）</span>
+          <h3>仙台西口大和魯內酒店 PREMIER</h3>
+          <p style="font-size:0.9rem;">JR 仙台站西口步行約 4 分鐘（2樓天橋往 Parco2 方向搭電梯下樓，轉角見 Starbucks 即達）。<br><strong>📦 行李動態：</strong>12/2 退房時寄放大件行李於飯店，12/8 回仙台領回。</p>
+        </div>
+        <div class="hotel-item">
+          <span class="hotel-days" style="background: var(--coral);">D2–D3（12/2–12/4 退房・連住 2 晚）</span>
+          <h3>函館世紀濱海酒店 (Century Marina Hakodate)</h3>
+          <p style="font-size:0.9rem;">JR 函館站步行 2 分鐘，緊鄰函館朝市，必吃超人氣海鮮自助早餐。</p>
+        </div>
+        <div class="hotel-item">
+          <span class="hotel-days" style="background: var(--yamabuki);">D4–D6（12/4–12/7 退房・連住 3 晚）</span>
+          <h3>盛岡格瑞茲高級酒店 (Hotel Royal Morioka / Grace)</h3>
+          <p style="font-size:0.9rem;">JR 盛岡站北口直連，出站步行 1 分鐘即達，作為北東北放射線移動基地超方便。</p>
+        </div>
+        <div class="hotel-item">
+          <span class="hotel-days" style="background: #E5D4F7;">D7（12/7–12/8 退房・一泊二食）</span>
+          <h3>秋保溫泉 迎賓館櫻離宮</h3>
+          <p style="font-size:0.9rem;">頂級別館私人露天湯屋＋晚間 Buffet 與日式早餐。提供仙台站東口免費接駁車（14:00 去程 / 10:30 回程，需預約）。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 可打勾清單 -->
+    <section class="ehon-card" id="checklists">
+      <h2 class="section-title" style="background: var(--coral);">✅ 待辦與預約清單</h2>
+      <ul class="checklist" id="list-todo"></ul>
+      <form class="add-item-form" data-list="todo">
+        <input type="text" class="add-input" placeholder="新增待辦或訂位事項..." required>
+        <button type="submit" class="add-btn">＋ 新增</button>
+      </form>
+    </section>
+
+    <section class="ehon-card">
+      <h2 class="section-title" style="background: var(--mizu);">📋 出發前準備清單</h2>
+      <ul class="checklist" id="list-pre"></ul>
+      <form class="add-item-form" data-list="pre">
+        <input type="text" class="add-input" placeholder="新增出發前準備..." required>
+        <button type="submit" class="add-btn">＋ 新增</button>
+      </form>
+    </section>
+
+    <section class="ehon-card">
+      <h2 class="section-title" style="background: var(--yamabuki);">🧳 冬季與酒鬼行李清單</h2>
+      <ul class="checklist" id="list-pack"></ul>
+      <form class="add-item-form" data-list="pack">
+        <input type="text" class="add-input" placeholder="新增行李或買酒裝備..." required>
+        <button type="submit" class="add-btn">＋ 新增</button>
+      </form>
+    </section>
+
+  </main>
+
+  <script>
+    const illusMap = {
+      sendai: `<svg viewBox="0 0 80 80" width="66" height="66" class="anim-float">
+        <path d="M15 48 Q40 22 65 48 Z" fill="#3E3A39"/>
+        <path d="M40 34 L20 14 L34 38 Z" fill="#F6D27A" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M40 34 L60 14 L46 38 Z" fill="#F6D27A" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/>
+        <ellipse cx="40" cy="58" rx="22" ry="9" fill="#F2A497" stroke="#3E3A39" stroke-width="2.5"/>
+        <path d="M26 56 Q40 62 54 56" stroke="#3E3A39" stroke-width="2" fill="none"/>
+      </svg>`,
+      hakodate: `<svg viewBox="0 0 80 80" width="66" height="66" class="anim-sway">
+        <polygon points="40,10 47,28 66,28 51,40 57,58 40,47 23,58 29,40 14,28 33,28" fill="#B9DAA5" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/>
+        <polygon points="40,21 44,31 55,31 46,38 49,48 40,42 31,48 34,38 25,31 36,31" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2"/>
+        <circle cx="40" cy="36" r="4" fill="#F6D27A" stroke="#3E3A39" stroke-width="2"/>
+      </svg>`,
+      morioka: `<svg viewBox="0 0 80 80" width="66" height="66" class="anim-float">
+        <path d="M18 42 Q18 64 40 64 Q62 64 62 42 Z" fill="#F2A497" stroke="#3E3A39" stroke-width="2.5"/>
+        <ellipse cx="40" cy="42" rx="22" ry="6" fill="#FFFFFF" stroke="#3E3A39" stroke-width="2.5"/>
+        <path d="M30 41 Q40 34 50 41" stroke="#3E3A39" stroke-width="2" fill="none"/>
+        <line x1="25" y1="22" x2="58" y2="32" stroke="#3E3A39" stroke-width="3" stroke-linecap="round"/>
+        <line x1="25" y1="28" x2="58" y2="35" stroke="#3E3A39" stroke-width="3" stroke-linecap="round"/>
+      </svg>`,
+      tazawako: `<svg viewBox="0 0 80 80" width="66" height="66" class="anim-float">
+        <path d="M10 56 Q25 50 40 56 T70 56 L70 68 L10 68 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2.5"/>
+        <circle cx="40" cy="26" r="7" fill="#F6D27A" stroke="#3E3A39" stroke-width="2.5"/>
+        <path d="M31 54 L34 35 L46 35 L49 54 Z" fill="#F6D27A" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/>
+      </svg>`,
+      geibikei: `<svg viewBox="0 0 80 80" width="66" height="66" class="anim-sway">
+        <path d="M12 52 L22 64 L58 64 L68 52 Z" fill="#F6D27A" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="26" y="38" width="28" height="14" rx="3" fill="#F2A497" stroke="#3E3A39" stroke-width="2.5"/>
+        <line x1="22" y1="38" x2="58" y2="38" stroke="#3E3A39" stroke-width="3" stroke-linecap="round"/>
+        <path d="M8 65 Q40 61 72 65" stroke="#A8D3E6" stroke-width="3" fill="none"/>
+      </svg>`,
+      onsen: `<svg viewBox="0 0 80 80" width="66" height="66" class="anim-float">
+        <ellipse cx="40" cy="54" rx="26" ry="12" fill="#F2A497" stroke="#3E3A39" stroke-width="2.5"/>
+        <ellipse cx="40" cy="52" rx="20" ry="8" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2"/>
+        <path d="M30 42 Q26 32 32 22" stroke="#3E3A39" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M40 39 Q36 28 42 18" stroke="#3E3A39" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M50 42 Q46 32 52 22" stroke="#3E3A39" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      </svg>`,
+      matsushima: `<svg viewBox="0 0 80 80" width="66" height="66" class="anim-float">
+        <path d="M12 52 Q40 32 68 52" stroke="#F2A497" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M12 52 Q40 32 68 52" stroke="#3E3A39" stroke-width="2.5" fill="none"/>
+        <line x1="24" y1="44" x2="24" y2="54" stroke="#3E3A39" stroke-width="2.5"/>
+        <line x1="40" y1="40" x2="40" y2="52" stroke="#3E3A39" stroke-width="2.5"/>
+        <line x1="56" y1="44" x2="56" y2="54" stroke="#3E3A39" stroke-width="2.5"/>
+        <path d="M10 60 Q40 55 70 60" stroke="#A8D3E6" stroke-width="3.5" fill="none"/>
+      </svg>`
+    };
+
+    const tripDays = [
+      {
+        day: "D1",
+        date: "12/1 (二)",
+        title: "抵達仙台・牛舌與毛豆泥調酒",
+        stay: "仙台西口大和魯內-PREMIER",
+        jrPass: "領取周遊券與指定席車票",
+        illus: "sendai",
+        events: [
+          {
+            time: "14:05",
+            transport: { text: "✈️ 航班 UO890", cls: "t-flight" },
+            title: "抵達仙台機場",
+            desc: "入境後前往仙台機場 Access 線月台。"
+          },
+          {
+            time: "15:07",
+            transport: { text: "🚃 機場 Access 線", cls: "t-jr" },
+            title: "仙台機場站 ➔ 15:33 抵 JR 仙台站",
+            desc: "車程 26 分（660 日圓），備案 15:25 發 → 15:52 抵。到站後先至綠色窗口／售票機領取周遊券與實體指定席車票。"
+          },
+          {
+            time: "15:35",
+            transport: { text: "🚶 步行 4 分鐘", cls: "t-walk" },
+            title: "飯店辦理入住",
+            desc: "車站 2 樓走天橋往 Parco2 方向，走到底搭電梯下樓，過轉角見 Starbucks 即達。"
+          },
+          {
+            time: "16:35",
+            transport: { text: "🚇 地鐵東西線", cls: "t-tram" },
+            title: "仙台站 (16:45發) ➔ 藥師堂站周邊逛街",
+            desc: "往荒川方向至藥師堂：白山神社、貳萬圓堂、タカハシ運動具店。"
+          },
+          {
+            time: "19:00",
+            transport: { text: "🥩 晚餐已訂座", cls: "t-walk" },
+            mustGo: true,
+            title: "牛舌料理「閣 大和町店」",
+            desc: "確認號碼：4DPJP6（備案：20:00 閣 名掛丁店）。餐後逛仙台西口 Donki。"
+          },
+          {
+            time: "21:30",
+            transport: { text: "🥃 晚間微醺", cls: "t-bar" },
+            isBar: true,
+            mustGo: true,
+            title: "AVARICE（19:00 營業・免桌費）",
+            desc: "經典洋酒調酒＋仙台限定毛豆泥特調。"
+          }
+        ]
+      },
+      {
+        day: "D2",
+        date: "12/2 (三)",
+        title: "新幹線北上函館・海上聖誕樹煙火",
+        stay: "函館世紀濱海酒店",
+        jrPass: "JR Pass Day 1",
+        illus: "hakodate",
+        events: [
+          {
+            time: "09:15",
+            transport: { text: "🧳 寄放行李", cls: "t-walk" },
+            title: "仙台飯店退房並寄放大行李箱",
+            desc: "輕裝帶過夜包前往 JR 仙台站，順便買人氣仙台駅弁（火車便當）。"
+          },
+          {
+            time: "09:50",
+            transport: { text: "🚄 新幹線 Hayabusa 5號", cls: "t-shinkansen" },
+            mustGo: true,
+            title: "仙台站發 ➔ 12:15 抵新函館北斗站",
+            desc: "車上享用仙台火車便當，欣賞風景一路北上北海道。",
+            seat: "🎫 已訂座位：4號車 11番 D席、E席"
+          },
+          {
+            time: "12:25",
+            transport: { text: "🚃 JR 函館 Liner", cls: "t-jr" },
+            title: "新函館北斗 ➔ 約 12:45 抵函館站",
+            desc: "周遊券免費・自由席（車程約 15–20 分鐘），出站步行 2 分鐘至飯店寄放行李。"
+          },
+          {
+            time: "14:00",
+            transport: { text: "🚶 灣區散步", cls: "t-walk" },
+            mustGo: true,
+            title: "金森紅磚倉庫群 ＆ 八幡坂雪景",
+            desc: "商店 09:30–19:00；八幡坂全天開放俯瞰港灣雪景。16:30 起函館聖誕嘉年華海上聖誕樹點燈，18:00 施放煙火！"
+          },
+          {
+            time: "18:30",
+            transport: { text: "🍺 精釀酒廠晚餐", cls: "t-walk" },
+            mustGo: true,
+            title: "HAKODATE BEER（はこだてビール）",
+            desc: "函館山 100% 天然地下水釀造，必點 4 款精釀試飲組＋啤酒醃製成吉思汗烤肉。"
+          },
+          {
+            time: "21:00",
+            transport: { text: "🥃 晚間微醺", cls: "t-bar" },
+            isBar: true,
+            mustGo: true,
+            title: "Bar ADDICT（17:00 營業・免桌費・車站旁）",
+            desc: "主打蘇格蘭絕版老酒與北海道厚岸威士忌。"
+          }
+        ]
+      },
+      {
+        day: "D3",
+        date: "12/3 (四)",
+        title: "函館雙方案任選・百萬夜景與單一麥芽",
+        stay: "續住：函館世紀濱海酒店",
+        jrPass: "JR Pass Day 2",
+        illus: "hakodate",
+        hasPlans: true,
+        plans: {
+          A: [
+            {
+              time: "08:00",
+              transport: { text: "🍳 飯店早餐", cls: "t-walk" },
+              mustGo: true,
+              title: "函館世紀濱海超人氣海鮮自助早餐",
+              desc: "自製鮭魚卵海鮮丼與現烤甜點。"
+            },
+            {
+              time: "09:30",
+              transport: { text: "🚋 函館市電", cls: "t-tram" },
+              mustGo: true,
+              title: "五稜郭公園與五稜郭塔",
+              desc: "市電至「五稜郭公園前」步行 15 分鐘（塔台 09:00–18:00，俯瞰白雪星形要塞）。"
+            },
+            {
+              time: "12:00",
+              transport: { text: "🚆 JR 特急北斗號", cls: "t-jr" },
+              title: "大沼國定公園雪原散策",
+              desc: "函館站搭北斗號至大沼公園站（周遊券免費・自由席，約 28 分）。午餐吃「沼之家」糰子＋成吉思汗烤肉。"
+            },
+            {
+              time: "17:30",
+              transport: { text: "🚋 市電＋纜車", cls: "t-tram" },
+              mustGo: true,
+              title: "函館山百萬夜景",
+              desc: "市電至「十字街」站步行 10 分鐘轉乘函館山纜車（10:00–21:00，上山末班 20:30；登山巴士冬季停駛）。晚餐吃函館鹽味拉麵。"
+            },
+            {
+              time: "21:00",
+              transport: { text: "🥃 晚間微醺", cls: "t-bar" },
+              isBar: true,
+              mustGo: true,
+              title: "Bar Twilight（18:00 營業・松風町）",
+              desc: "200 款單一麥芽威士忌＋職人手鑿冰球。"
+            }
+          ],
+          B: [
+            {
+              time: "08:30",
+              transport: { text: "🚶 步行 2 分鐘", cls: "t-walk" },
+              mustGo: true,
+              title: "函館朝市釣活烏賊 ＆ 元町異國建築群",
+              desc: "飯店早餐留點胃去朝市體驗現釣活烏賊刺身！接著搭市電至「末廣町」站逛元町教會群、舊函館區公會堂雪景。"
+            },
+            {
+              time: "13:30",
+              transport: { text: "🚋 市電至湯の川", cls: "t-tram" },
+              mustGo: true,
+              title: "函館市熱帶植物園（冬季限定・獼猴泡溫泉）",
+              desc: "09:30–16:30（門票 300 日圓），12/1 起看日本獼猴泡湯＋免費天然足湯。市電「湯の川」站步行 15 分或計程車 5 分。"
+            },
+            {
+              time: "15:30",
+              transport: { text: "🚕 計程車 10 分", cls: "t-bus" },
+              mustGo: true,
+              title: "五稜郭塔日景＋16:05「五稜星之夢」點燈",
+              desc: "15:30 登塔同時看雪白要塞日景與日落彩燈亮起！午餐可於五稜郭吃「味彩」鹽味拉麵或「旬花」迴轉壽司＋六花亭。"
+            },
+            {
+              time: "17:45",
+              transport: { text: "🚋 市電＋纜車", cls: "t-tram" },
+              mustGo: true,
+              title: "函館山百萬夜景",
+              desc: "市電至「十字街」站步行 10 分鐘轉乘函館山纜車（往返 1,800 日圓，上山末班 20:30）。"
+            },
+            {
+              time: "19:30",
+              transport: { text: "🍺 晚餐＆微醺", cls: "t-bar" },
+              isBar: true,
+              mustGo: true,
+              title: "HAKODATE BEER 晚餐 ➔ Bar Twilight",
+              desc: "先至灣區酒廠大口吃成吉思汗烤肉配現釀啤酒，續攤松風町 Bar Twilight 品飲 200 款單一麥芽與手鑿冰球。"
+            }
+          ]
+        }
+      },
+      {
+        day: "D4",
+        date: "12/4 (五)",
+        title: "跨越津輕海峽抵達盛岡・冷麵燒肉與鋼琴酒吧",
+        stay: "盛岡格瑞茲高級酒店（連住3晚）",
+        jrPass: "JR Pass Day 3",
+        illus: "morioka",
+        events: [
+          {
+            time: "08:00",
+            transport: { text: "🍳 悠閒早晨", cls: "t-walk" },
+            title: "函館飯店早餐 ＆ 退房前往車站",
+            desc: "若選 Plan A，可利用一早逛元町教會群或熱帶植物園；於函館站購買海鮮駅弁上車享用。"
+          },
+          {
+            time: "10:05",
+            transport: { text: "🚆 特急 Hokuto 7號", cls: "t-jr" },
+            title: "函館站發 ➔ 10:22 抵新函館北斗站",
+            desc: "準備轉乘北海道・東北新幹線。",
+            seat: "🎫 已訂座位：2號車 7番 A席、B席"
+          },
+          {
+            time: "10:53",
+            transport: { text: "🚄 新幹線 Hayabusa 18號", cls: "t-shinkansen" },
+            title: "新函館北斗發 ➔ 12:45 抵盛岡站",
+            desc: "出站北口步行 1 分鐘直達飯店放行李。",
+            seat: "🎫 已訂座位：8號車 6番 D席、E席"
+          },
+          {
+            time: "14:00",
+            transport: { text: "🚶 市內散步", cls: "t-walk" },
+            title: "盛岡城跡公園雪景・中津川畔・岩手銀行紅磚館",
+            desc: "岩手銀行紅磚館開放時間 10:00–17:00，感受明治復古紅磚建築與雪景。"
+          },
+          {
+            time: "18:00",
+            transport: { text: "🥩 盛岡名物晚餐", cls: "t-walk" },
+            mustGo: true,
+            title: "「盛樓閣」或「ぴょんぴょん舎」盛岡冷麵＋燒肉",
+            desc: "盛岡站前名店，必點彈牙冷麵配頂級和牛燒肉。"
+          },
+          {
+            time: "20:00",
+            transport: { text: "🥃 晚間微醺", cls: "t-bar" },
+            isBar: true,
+            mustGo: true,
+            title: "Nikka-tei（にっか亭・19:00 營業）",
+            desc: "百年老倉庫改建＋現場鋼琴演奏＋豐富日本威士忌收藏。"
+          }
+        ]
+      },
+      {
+        day: "D5",
+        date: "12/5 (六)",
+        title: "田澤湖琉璃藍雪景・冠軍調酒師巡禮",
+        stay: "續住：盛岡格瑞茲高級酒店",
+        jrPass: "JR Pass Day 4",
+        illus: "tazawako",
+        events: [
+          {
+            time: "11:23",
+            transport: { text: "🚄 秋田新幹線 Komachi 9號", cls: "t-shinkansen" },
+            title: "盛岡站發 ➔ 11:59 抵田澤湖站",
+            desc: "早上可先在盛岡站吃早午餐，或買便當上車享用。",
+            seat: "🎫 已訂座位：13號車 9番 C席、D席"
+          },
+          {
+            time: "13:25",
+            transport: { text: "🚌 羽後交通環湖巴士", cls: "t-bus" },
+            mustGo: true,
+            title: "田澤湖一周線（13:25 發 ➔ 14:56 返抵車站）",
+            desc: "現場購票 1,250 日圓。欣賞日本最深不凍湖的琉璃藍湖水與白雪山脈倒影，辰子像停 20 分、御座石神社停 10 分、途經浮木神社。"
+          },
+          {
+            time: "16:09",
+            transport: { text: "🚄 秋田新幹線 Komachi 32號", cls: "t-shinkansen" },
+            title: "田澤湖站發 ➔ 16:48 返抵盛岡站",
+            desc: "天黑前準時收工返回盛岡市區。",
+            seat: "🎫 已訂座位：13號車 8番 C席、D席"
+          },
+          {
+            time: "18:00",
+            transport: { text: "🍜 傳統名物晚餐", cls: "t-walk" },
+            title: "中津川旁「東家 本店」",
+            desc: "挑戰經典碗子蕎麥麵（わんこそば）或盛岡炸醬麵。"
+          },
+          {
+            time: "20:00",
+            transport: { text: "🥃 晚間微醺", cls: "t-bar" },
+            isBar: true,
+            mustGo: true,
+            title: "Bar Lupin（19:30 營業）",
+            desc: "三得利調酒大賽冠軍坐鎮，品飲教科書級經典洋酒調酒。"
+          }
+        ]
+      },
+      {
+        day: "D6",
+        date: "12/6 (日)",
+        title: "猊鼻溪冬季暖桌遊船・日威 IB 聖地",
+        stay: "續住：盛岡格瑞茲高級酒店",
+        jrPass: "JR Pass Day 5",
+        illus: "geibikei",
+        events: [
+          {
+            time: "09:06",
+            transport: { text: "🚄 新幹線 Hayabusa 108號", cls: "t-shinkansen" },
+            title: "盛岡站發 ➔ 09:44 抵一之關站",
+            desc: "準備轉乘 JR 大船渡線。",
+            seat: "🎫 已訂座位：3號車 10番 D席、E席"
+          },
+          {
+            time: "10:16",
+            transport: { text: "🚃 JR 大船渡線", cls: "t-jr" },
+            title: "一之關站發 ➔ 10:48 抵猊鼻溪站",
+            desc: "周遊券免費・自由席。到站後快步步行 5 分鐘至乘船處買票（1,800 日圓）並領取預約便當。"
+          },
+          {
+            time: "11:00",
+            transport: { text: "🛶 冬季限定暖桌船", cls: "t-bus" },
+            mustGo: true,
+            title: "猊鼻溪暖桌遊船 ＆ 船上火鍋便當（11:00–12:30）",
+            desc: "航程 90 分鐘，雙腳伸進暖桌欣賞雪覆百米石灰岩峭壁與船夫吟唱民謠，享用提前預約的「前澤牛壽喜燒/木流火鍋」便當！"
+          },
+          {
+            time: "13:06",
+            transport: { text: "🚃 JR 大船渡線", cls: "t-jr" },
+            title: "猊鼻溪站發 ➔ 13:43 返抵一之關站",
+            desc: "下午茶必吃一之關站前「松榮堂總本店」芝麻爆漿糰子＋熱茶。"
+          },
+          {
+            time: "15:13",
+            transport: { text: "🚄 新幹線 Yamabiko 61號", cls: "t-shinkansen" },
+            title: "一之關站發 ➔ 15:50 抵盛岡站",
+            desc: "備案：若提早吃完下午茶，可即場改搭 14:13 Yamabiko 59 號自由席。返抵盛岡後逛車站「Fesan」採買。",
+            seat: "🎫 已訂座位：7號車 11番 D席、E席"
+          },
+          {
+            time: "18:30",
+            transport: { text: "🥃 晚餐＆日威聖地", cls: "t-bar" },
+            isBar: true,
+            mustGo: true,
+            title: "盛岡居酒屋 ➔ Scotch House（18:00 營業）",
+            desc: "晚餐品嚐岩手短角牛或三陸海鮮；續攤日本威士忌迷聖地 Scotch House（週日照常營業），專攻罕見獨立裝瓶廠 IB 與絕版老酒。"
+          }
+        ]
+      },
+      {
+        day: "D7",
+        date: "12/7 (一)",
+        title: "秋保溫泉奢華別館・私人露天湯屋",
+        stay: "秋保溫泉 迎賓館櫻離宮（一泊二食）",
+        jrPass: "JR Pass Day 6",
+        illus: "onsen",
+        events: [
+          {
+            time: "10:00",
+            transport: { text: "☕ 慢活早晨", cls: "t-walk" },
+            title: "盛岡飯店早餐＆退房",
+            desc: "直接下樓進站，於盛岡站購買人氣駅弁準備上新幹線享用。"
+          },
+          {
+            time: "12:50",
+            transport: { text: "🚄 新幹線 Hayabusa 18號", cls: "t-shinkansen" },
+            title: "盛岡站發 ➔ 13:29 抵仙台站",
+            desc: "車程僅 39 分鐘，輕鬆返回宮城縣。",
+            seat: "🎫 已訂座位：1號車 5番 D席、E席"
+          },
+          {
+            time: "14:00",
+            transport: { text: "🚐 飯店免費接駁車", cls: "t-bus" },
+            mustGo: true,
+            title: "仙台站東口出發 ➔ 約 14:35 抵迎賓館櫻離宮",
+            desc: "需提前致電 0570-550-397 預約（新幹線閘口出東口下樓至觀光・送迎巴士乘車處約 5–7 分鐘）。備案：14:42 仙台站前 8 號乘車處搭宮城交通秋保線巴士（15:38 到湯元）。"
+          },
+          {
+            time: "15:30",
+            transport: { text: "♨️ 私人湯屋＆散步", cls: "t-walk" },
+            mustGo: true,
+            title: "磊磊峽散步 ＆ 享受客房私人露天湯屋",
+            desc: "全天開放的磊磊峽峽谷雪景散步，回房泡私人露天溫泉，晚餐於迎賓館櫻離宮享用精緻 Buffet。"
+          }
+        ]
+      },
+      {
+        day: "D8",
+        date: "12/8 (二)",
+        title: "秋保手工萩餅・仙台掃酒與 SMWS 協會酒",
+        stay: "仙台西口大和魯內-PREMIER",
+        jrPass: "單程購票",
+        illus: "onsen",
+        events: [
+          {
+            time: "08:30",
+            transport: { text: "♨️ 晨湯＆日式早餐", cls: "t-walk" },
+            title: "睡到自然醒・再泡一次私人湯屋",
+            desc: "享用迎賓館櫻離宮日式早餐，退房前可順道買秋保溫泉「主婦之店 Saichi」超人氣手工萩餅。"
+          },
+          {
+            time: "10:30",
+            transport: { text: "🚐 飯店免費接駁車", cls: "t-bus" },
+            title: "迎賓館櫻離宮發 ➔ 約 11:10 抵 JR 仙台站東口",
+            desc: "請於入住時櫃檯預約。備案：10:55 或 11:57 於秋保溫泉湯元搭秋保線巴士（刷 Suica 940 日圓）。"
+          },
+          {
+            time: "12:00",
+            transport: { text: "🧳 領回大行李", cls: "t-walk" },
+            mustGo: true,
+            title: "飯店領回大行李箱 ＆ 仙台市區威士忌掃貨",
+            desc: "午餐吃海鮮丼或拉麵；下午前往藤崎百貨、仙台三越地下酒窖或仙台站 2 樓伴手禮區，免稅購入宮城限定「伊達 (Date)」與「宮城峽單一麥芽」。有興致可順遊瑞鳳殿（開放至 16:20）。"
+          },
+          {
+            time: "16:00",
+            transport: { text: "🥃 午後 4 點開喝", cls: "t-bar" },
+            isBar: true,
+            mustGo: true,
+            title: "Bar Andante（16:00 營業・距飯店步行 10 分）",
+            desc: "擁有海量蘇格蘭威士忌協會酒（SMWS）與稀有限量洋酒！"
+          },
+          {
+            time: "19:30",
+            transport: { text: "🍲 仙台冬季名物", cls: "t-walk" },
+            mustGo: true,
+            title: "水芹火鍋（せり鍋）＋宮城地酒",
+            desc: "12 月最對時的仙台根連葉水芹鴨肉／雞肉火鍋。"
+          }
+        ]
+      },
+      {
+        day: "D9",
+        date: "12/9 (三)",
+        title: "日本三景松島・肥美烤牡蠣與 1990 年代老酒",
+        stay: "續住：仙台西口大和魯內-PREMIER",
+        jrPass: "單程購票",
+        illus: "matsushima",
+        events: [
+          {
+            time: "08:56",
+            transport: { text: "🚃 JR 仙石線", cls: "t-jr" },
+            title: "仙台站發 ➔ 09:37 抵松島海岸站",
+            desc: "睡晚一點可搭 09:30 發 → 10:12 抵（車程約 40 分鐘，420 日圓）。"
+          },
+          {
+            time: "09:45",
+            transport: { text: "⛩️ 國寶古蹟", cls: "t-walk" },
+            mustGo: true,
+            title: "國寶 瑞嚴寺與五大堂",
+            desc: "瑞嚴寺 12 月開放 08:30–15:30（最終受付 15:00），務必上午先參觀。"
+          },
+          {
+            time: "11:00",
+            transport: { text: "🚢 仁王丸航線", cls: "t-bus" },
+            mustGo: true,
+            title: "松島灣遊覽船（50 分鐘）＆ 福浦橋",
+            desc: "09:00–16:00 整點開船；福浦橋（08:30–17:00）漫步紅橋欣賞松島灣海景。"
+          },
+          {
+            time: "12:30",
+            transport: { text: "🦪 冬季限定美味", cls: "t-walk" },
+            mustGo: true,
+            title: "松島魚市場海鮮丼 或「松島牡蠣小屋」現烤肥美牡蠣",
+            desc: "12 月正值宮城牡蠣最肥美季節！餐後搭 14:11 或 14:45 仙石線返回仙台站。"
+          },
+          {
+            time: "16:00",
+            transport: { text: "🥃 準時續攤老酒", cls: "t-bar" },
+            isBar: true,
+            mustGo: true,
+            title: "Bar Andy（16:00 營業・國分町）",
+            desc: "藏有夢幻級 1990 年代老酒與雪莉桶單一麥芽＋必點下酒菜「煙燻牛舌肉乾」！"
+          },
+          {
+            time: "19:30",
+            transport: { text: "🍻 告別巡禮", cls: "t-bar" },
+            isBar: true,
+            title: "一番町居酒屋告別餐 ➔ 二軒目 Bar Andante 睡前酒",
+            desc: "為 10 天東北微醺之旅畫下完美句點。"
+          }
+        ]
+      },
+      {
+        day: "D10",
+        date: "12/10 (四)",
+        title: "仙台朝市海鮮湯・滿載威士忌返港",
+        stay: "退房返港",
+        jrPass: "單程購票",
+        illus: "sendai",
+        events: [
+          {
+            time: "08:30",
+            transport: { text: "🚶 步行 3 分鐘", cls: "t-walk" },
+            mustGo: true,
+            title: "仙台朝市最後採買＆早餐",
+            desc: "08:00–17:00 營業，必喝現煮海鮮味噌湯＋現炸可樂餅！回飯店將威士忌用氣泡紙與夾鏈袋妥善打包托運。"
+          },
+          {
+            time: "11:30",
+            transport: { text: "🚃 機場 Access 線", cls: "t-jr" },
+            title: "JR 仙台站發 ➔ 11:55 抵仙台機場站",
+            desc: "備案 11:10 或 11:50 發車（車程 25 分鐘，660 日圓）。午餐於仙台機場 3 樓餐廳街享用牛舌定食或拉麵。"
+          },
+          {
+            time: "15:00",
+            transport: { text: "✈️ 航班 UO891", cls: "t-flight" },
+            title: "仙台機場起飛 ➔ 19:40 抵香港國際機場 T1",
+            desc: "提醒：香港每人免稅額為 1 公升（30% 以上烈酒），2 人合計 2 公升，超額記得走申報通道。"
+          }
+        ]
+      }
+    ];
+
+    let currentDayIdx = 0;
+    let currentD3Plan = "A";
+
+    const dayTabsEl = document.getElementById("dayTabs");
+    const dayContentEl = document.getElementById("dayContent");
+
+    function renderTabs() {
+      dayTabsEl.innerHTML = tripDays.map((item, idx) => `
+        <button class="day-tab ${idx === currentDayIdx ? 'active' : ''}" role="tab" aria-selected="${idx === currentDayIdx}" onclick="selectDay(${idx})">
+          <span class="d-num">${item.day}</span>
+          <span class="d-date">${item.date}</span>
+        </button>
+      `).join("");
+    }
+
+    function renderDayContent(animate = true) {
+      const d = tripDays[currentDayIdx];
+      const eventsList = d.hasPlans ? d.plans[currentD3Plan] : d.events;
+
+      const planSwitcherHtml = d.hasPlans ? `
+        <div class="plan-switcher">
+          <button class="plan-btn ${currentD3Plan === 'A' ? 'active' : ''}" onclick="switchD3Plan('A')">Plan A：五稜郭＋大沼公園雪景</button>
+          <button class="plan-btn ${currentD3Plan === 'B' ? 'active' : ''}" onclick="switchD3Plan('B')">Plan B：朝市釣烏賊＋獼猴泡湯</button>
+        </div>
+      ` : "";
+
+      const timelineHtml = eventsList.map(ev => `
+        <div class="tl-item ${ev.isBar ? 'bar-item' : ''}">
+          <div class="tl-top">
+            <span class="tl-time">${ev.time}</span>
+            <span class="t-badge ${ev.transport.cls}">${ev.transport.text}</span>
+            ${ev.mustGo ? '<span class="must-go">★ 必去</span>' : ''}
+          </div>
+          <div class="tl-title">${ev.title}</div>
+          <div class="tl-desc">${ev.desc}</div>
+          ${ev.seat ? `<div class="seat-box">${ev.seat}</div>` : ''}
+        </div>
+      `).join("");
+
+      if (animate) {
+        dayContentEl.classList.remove("animate-in");
+        void dayContentEl.offsetWidth;
+        dayContentEl.classList.add("animate-in");
+      }
+
+      dayContentEl.innerHTML = `
+        <div class="day-banner">
+          <div class="day-banner-info">
+            <h3>${d.day} (${d.date})｜${d.title}</h3>
+            <div>
+              <span class="stay-pill">🏨 ${d.stay}</span>
+              <span class="jr-pill">🎫 ${d.jrPass}</span>
+            </div>
+          </div>
+          <div class="day-illus" aria-hidden="true">
+            ${illusMap[d.illus]}
+          </div>
+        </div>
+        ${planSwitcherHtml}
+        <div class="timeline">
+          ${timelineHtml}
+        </div>
+      `;
+    }
+
+    window.selectDay = function(idx) {
+      currentDayIdx = idx;
+      renderTabs();
+      renderDayContent(true);
+      const activeTab = dayTabsEl.children[idx];
+      if (activeTab) {
+        activeTab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    };
+
+    window.switchD3Plan = function(plan) {
+      currentD3Plan = plan;
+      renderDayContent(true);
+    };
+
+    renderTabs();
+    renderDayContent(false);
+
+    const targetTime = new Date("2026-12-01T09:00:00+08:00").getTime();
+
+    function updateCountdown() {
+      const now = Date.now();
+      const diff = targetTime - now;
+
+      if (diff <= 0) {
+        document.getElementById("cdStatus").textContent = "🎉 旅程已出發！祝東北・函館微醺愉快！";
+        ["cdDays", "cdHours", "cdMins", "cdSecs"].forEach(id => {
+          document.getElementById(id).textContent = "00";
+        });
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / 1000 / 60) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("cdDays").textContent = String(days).padStart(2, "0");
+      document.getElementById("cdHours").textContent = String(hours).padStart(2, "0");
+      document.getElementById("cdMins").textContent = String(mins).padStart(2, "0");
+      document.getElementById("cdSecs").textContent = String(secs).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    const motionBtn = document.getElementById("motionBtn");
+    const motionIcon = document.getElementById("motionIcon");
+    const motionText = document.getElementById("motionText");
+
+    function setReduceMotion(reduce) {
+      document.body.classList.toggle("reduce-motion", reduce);
+      motionBtn.setAttribute("aria-pressed", String(reduce));
+      motionIcon.textContent = reduce ? "⏸️" : "✨";
+      motionText.textContent = reduce ? "動態關" : "動態開";
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setReduceMotion(true);
+    }
+
+    motionBtn.addEventListener("click", () => {
+      const isReduced = document.body.classList.contains("reduce-motion");
+      setReduceMotion(!isReduced);
+    });
+
+    const defaultLists = {
+      todo: [
+        { text: "【已訂座】D1 19:00 閣 大和町店（確認碼：4DPJP6）", done: true },
+        { text: "【已訂票】D2・D4・D5・D6・D7 新幹線與特急指定席座位", done: true },
+        { text: "預約 D7 (14:00) & D8 (10:30) 秋保溫泉迎賓館櫻離宮免費接駁車（0570-550-397）", done: false },
+        { text: "官網預約 D6 (12/6) 11:00 猊鼻溪暖桌船「前澤牛壽喜燒/木流火鍋」便當（最晚 12/4 前）", done: false },
+        { text: "預約 D2 或 D3 晚餐「HAKODATE BEER」精釀酒廠餐廳座位", done: false },
+        { text: "寫信向仙台西口大和魯內-PREMIER 確認 12/2–12/8 寄放大行李箱 6 晚", done: false }
+      ],
+      pre: [
+        { text: "護照效期確認（6 個月以上）＆ 填寫 Visit Japan Web（入境審查＋海關申報）", done: false },
+        { text: "購買日本上網 eSIM / 漫遊方案（涵蓋北海道與東北山區訊號）", done: false },
+        { text: "手機綁定交通 IC 卡（Suica / ICOCA）並儲值（搭函館市電、秋保巴士必備）", done: false },
+        { text: "準備日幣現金（田澤湖環湖巴士 1,250¥、猊鼻溪船票 1,800¥、酒吧與朝市現金支付）", done: false },
+        { text: "投保旅遊平安險與冬季航班延誤險", done: false }
+      ],
+      pack: [
+        { text: "🥂 酒鬼專屬：氣泡紙、加厚防漏夾鏈袋、酒瓶防撞氣柱袋（託運威士忌必備）", done: false },
+        { text: "🥂 酒鬼專屬：隨身行李秤（避免買太多威士忌與伴手禮超重）", done: false },
+        { text: "防滑防水雪靴或冰爪鞋套（函館八幡坂、五稜郭、田澤湖雪地防滑）", done: false },
+        { text: "洋蔥式保暖穿搭：發熱衣、羽絨外套、毛帽、圍巾、觸控防水手套", done: false },
+        { text: "暖暖包（貼式＋手握式）、保濕護唇膏與護手霜（東北乾燥寒冷）", done: false },
+        { text: "備用折疊旅行袋（12/2–12/7 寄放大行李箱期間裝過夜衣物）", done: false }
+      ]
+    };
+
+    const STORAGE_KEY = "tohoku_hakodate_2026_iphone_v1";
+    let savedLists = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultLists;
+
+    function saveLists() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedLists));
+    }
+
+    function renderChecklist(key) {
+      const ul = document.getElementById(`list-${key}`);
+      ul.innerHTML = savedLists[key].map((item, index) => `
+        <li class="check-row ${item.done ? 'done' : ''}" onclick="toggleCheck('${key}', ${index}, event)">
+          <input type="checkbox" ${item.done ? 'checked' : ''} aria-label="${item.text}">
+          <span class="check-text">${item.text}</span>
+        </li>
+      `).join("");
+    }
+
+    window.toggleCheck = function(key, index, event) {
+      if (event.target.tagName !== "INPUT") {
+        savedLists[key][index].done = !savedLists[key][index].done;
+      } else {
+        savedLists[key][index].done = event.target.checked;
+      }
+      saveLists();
+      renderChecklist(key);
+    };
+
+    ["todo", "pre", "pack"].forEach(key => renderChecklist(key));
+
+    document.querySelectorAll(".add-item-form").forEach(form => {
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const key = form.dataset.list;
+        const input = form.querySelector(".add-input");
+        const val = input.value.trim();
+        if (!val) return;
+        savedLists[key].push({ text: val, done: false });
+        saveLists();
+        renderChecklist(key);
+        input.value = "";
+      });
+    });
+  </script>
+</body>
+</html>
